@@ -1,0 +1,13 @@
+Escreva o código MIPS para as questões abaixo, considere $s0 = 0xA00DEFFF, $s1 = 0x00FF1234.
+
+a) Ative o bit 24 de $s0, qual o valor de $s0?
+0xA08DEFFF
+
+b) Limpe os bits 2, 8 e 13 de $s0, qual o valor de $s0?
+0xA00DEF7D
+
+c) Complemente os bits 0 e 31 de $s1, qual o valor de $s1?
+0x80FF1235
+
+d) Ative os bits 1, 21, 28 e 30 de $s1, qual o valor de $s1?
+0x28FF1235

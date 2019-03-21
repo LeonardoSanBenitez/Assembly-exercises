@@ -1,4 +1,4 @@
-# Lista 1 ex 4
+# Lista 1 ex 10
 # Brief: Faça um laço que seja executado 10 vezes.
 # Variables map:
 #	$s0 = i

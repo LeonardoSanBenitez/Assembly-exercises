@@ -1,0 +1,10 @@
+2. Considerando $t0 = 0xAAAAAAAA e $t1 = 0x12345678, qual é o valor de $t2 após a execução dos
+códigos abaixo?
+a)
+sll $t2, $t0, 4		# t2 = 0xAAAAAAA0
+addi $t2, $t2, -1	# t2 + 0xffffffff = 0xaaaaaa9f
+
+b) 
+srl $t2, $t1, 3		# t2 = 0x02468ACF
+andi $t2, $t2, 0xFFEF	# t2 = 0x00008ACF
+
