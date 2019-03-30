@@ -1,4 +1,5 @@
 # Lista 1 ex 1
+# Author: Leonardo Benitez
 # Variables map:
 # 	$t0=Base
 # 	$t1=A

@@ -1,3 +1,4 @@
+# Author: Leonardo Benitez
 # Lista 1 ex 4
 
 	lw	$t0, 0 ($gp)

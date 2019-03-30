@@ -1,4 +1,5 @@
 # Lista 1 ex 10
+# Author: Leonardo Benitez
 # Brief: Faça um laço que seja executado 10 vezes.
 # Variables map:
 #	$s0 = i
