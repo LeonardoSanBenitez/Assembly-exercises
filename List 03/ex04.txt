@@ -1,0 +1,2 @@
+a) Não, pois não está na mesma "janela" de memória (não possui os mesmo 4 bits mais significativos do PC)
+b) Também não, pois está muito longo (mais de 4*2^16 bits)

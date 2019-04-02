@@ -1,7 +1,0 @@
-.text
-
-b test
-#j test
-
-.ktext
-test: nop

@@ -1,0 +1,19 @@
+LOOP:
+        slt $t2, $zero, $t1
+        beq $t2, $zero, DONE    # if (t1<=0) goto done
+        subi $t1, $t1, 1        # t1--
+        addi $s2, $s2, 2        # s2+=2
+        j LOOP
+DONE:
+
+
+# init t1=10 and s2=0
+# output: s2 == 20
+
+## C transcription
+while (i > 0){
+    B+=2;
+    i++
+}
+
+## pseudocode: do {s2+=2} 10 times
