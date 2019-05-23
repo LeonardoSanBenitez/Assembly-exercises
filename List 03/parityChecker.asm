@@ -14,6 +14,7 @@
 #       temp = 0x00000001 | (s0>>i)
 #       sum += temp
 #   } if (sum%2!=0) s1=1
+# Errada: existe um jeito bem mais otmizado de fazer isso, rsrs.
 
 # debug
 li $s0, 0x00000007F
