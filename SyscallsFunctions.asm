@@ -7,17 +7,17 @@ printInt:
 
 # void prinFloat (float n)
 printFloat:
-	lwc1	$f12, 0 ($a0)
+	mtc1	$a0, $f12	
 	li	$v0, 2		# Service print float
 	syscall
-  jr $ra
+	jr $ra
 
 # void printDouble (double n)
-# n must be in $f12           TODO: PUXAR DE A0
 printDouble:
-  li	$v0, 3
-  syscall
-  jr $ra
+	mtc1.d	$a0, $f12
+  	li	$v0, 3
+  	syscall
+  	jr $ra
 
 # void printString(char* str);
 printString:
@@ -36,11 +36,10 @@ getInt:
 getFloat:
   li	$v0, 6
   syscall
-  #mfc0  $v0, $f0
   jr $ra
 
 # void getDouble ()
-#result in $f0        TODO: mandar para v0
+#result in $f0
 getDouble:
   li	$v0, 7
   syscall
