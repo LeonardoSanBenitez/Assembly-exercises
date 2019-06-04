@@ -7,7 +7,7 @@ printInt:
 
 # void prinFloat (float n)
 printFloat:
-	mtc1	$a0, $f12	
+	mtc1	$a0, $f12
 	li	$v0, 2		# Service print float
 	syscall
 	jr $ra

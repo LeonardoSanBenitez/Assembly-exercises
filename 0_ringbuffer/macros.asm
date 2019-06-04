@@ -1,6 +1,3 @@
-
-#=======================================
-# MACROS
 .macro exit
     li $v0, 10
     syscall
@@ -25,7 +22,7 @@
 .end_macro
 
 .macro print_str (%str)
-.data
+.data 
 mStr: .asciiz %str
 .text
     li $v0, 4

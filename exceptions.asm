@@ -1,11 +1,11 @@
-.text
-	# generate exception
-	teq	$t0, $t0
-
-	# Finish program
-	li	$v0, 17			# Service terminate
-	li	$a0, 0			# Service parameter (termination result)
-	syscall
+# .text
+# 	# generate exception
+# 	teq	$t0, $t0
+#
+# 	# Finish program
+# 	li	$v0, 17			# Service terminate
+# 	li	$a0, 0			# Service parameter (termination result)
+# 	syscall
 
 
 #-----------------------------------------------#
@@ -14,7 +14,7 @@
 .kdata
 EcpH:	.asciiz "\nException: \n"
 .align 2
-EcpR:	.space 128
+EcpR:	.space 128	# space to save registers
 # Jump Table
 EcpJT: .word Ecp0, Ecpd, Ecpd, Ecpd, Ecp4, Ecp5, Ecp6, Ecp7, Ecp8, Ecp9, Ecp10, Ecpd, Ecp12, Ecp13, Ecpd, Ecp15
 # Names of the exceptions
@@ -26,7 +26,7 @@ EcpN7: .asciiz "DBUS"		# Bus error on data load or Store
 EcpN8: .asciiz "SYSCALL"	# Sistem call (caused by Syscall instruction)
 EcpN9: .asciiz "BKPT"		# breakpoint (caused by Break instruction)
 EcpN10: .asciiz "RI"		# Reserved Instruction
-EcpN12: .asciiz "OVF"		# Arithmatic overflow
+EcpN12: .asciiz "OVF"		# Arithmetic overflow
 EcpN13: .asciiz "TRAP"		# Trap Exception (caused by Trap instruction)
 EcpN15: .asciiz "FPE"		# Floating point exception (caused by floating point instruction)
 EcpNd:	.asciiz "Unknown"	# Default state
@@ -79,24 +79,46 @@ EcpNd:	.asciiz "Unknown"	# Default state
 
 	## Swicth (s0){case 1: ...}
 	#check bounds
-	ble $s0, $zero Ecpd	# if read>=0, default
+	blt $s0, $zero Ecpd	# if read>=0, default
 	addi $t0, $zero, 15
 	bgt $s0, $t0, Ecpd	# if read>15, default
 
 	#translate case
-	la $t0, EcpJT
-	mul $t1, $s0, 4
+	la $t0, EcpJT		# Jump table base addr
+	mul $t1, $s0, 4		# convert s0 to bytes
 	add $t0, $t0, $t1	# t0 = &JumTable[cause]
 	lw $t2, 0 ($t0)
 	jr $t2
 
-# Case 0
+# Case 0 (interrupt handler)
+# To change the interrupt priority, change the order on the code
+# Disable nested interrupts?
 Ecp0:
 	addi	$v0, $zero, 4	# print string service
 	la	$a0, EcpN0	# service parameter
 	syscall
 
-	j	EcpEnd
+
+	mfc0	$s0, $13	# Take cause register
+
+	Ecp0a: # Exception 0 (keyboard, in Mars)
+		andi	$s1, $s0, 0x00000100 # take interrupt bit
+		beq		$s1, $zero, Ecp0b
+		andi	$s1, $s0, 0xfffffeff	# clear interrupt bit
+		mtc0	$s1, $13	# store cleared bit in $cause
+		la	$t3, ISR0
+		jalr	$t3				# void ISRn()
+		j	EcpEnd
+	Ecp0b: # Exception 1 (display, in Mars)
+		andi	$s1, $s0, 0x00000200 # take interrupt bit
+		beq		$s1, $zero, Ecp0c
+		andi	$s1, $s0, 0xfffffdff	# clear interrupt bit
+		mtc0	$s1, $13	# store cleared bit in $cause
+		la	$t3, ISR1
+		jalr	$t3				# void ISRn()
+		j	EcpEnd
+	Ecp0c:
+		j	EcpEnd
 # Case 4
 Ecp4:
 	addi	$v0, $zero, 4	# print string service
@@ -211,7 +233,7 @@ EcpEnd:
 	lw	$31, 124($k1)
 
 	# Finish exception handler
- 	mfc0	$k0, $14 =	# $k0 = EPC
+ 	mfc0	$k0, $14 	# $k0 = EPC
  	addiu	$k0, $k0, 4	# Increment $k0 by 4
  	mtc0	$k0, $14	# EPC = point to next instruction
  	eret
