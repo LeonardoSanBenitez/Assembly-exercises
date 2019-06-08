@@ -1,5 +1,3 @@
-.include "macros.asm"
-
 .eqv STACK_ADDRESS 0x7FFFEFFC
 
 .text 0x00400000
