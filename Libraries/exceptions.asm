@@ -1,3 +1,4 @@
+# TEST CODE
 # .text
 # 	# generate exception
 # 	teq	$t0, $t0
