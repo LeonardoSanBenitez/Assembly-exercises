@@ -4,6 +4,7 @@
 .text 0x00500000
 .include "../Libraries/SyscallsFunctions.asm"
 .include "../Libraries/macros.asm"
+.include "../Libraries/BubbleSort.asm"
 
 # --------------------------------------------------- #
 # Main data section
@@ -108,7 +109,8 @@ menu1:
 menu2:
 	la	$a0, array
 	lw	$a1, arraySize
-	jal	bubleSortCrescent
+	sll	$a1, $a1, 2
+	jal	bubbleSortCrescent
 
 	# Print string
 	la	$a0, menu1S		# Service parameter (address of string)
@@ -123,7 +125,22 @@ menu2:
 	j	menuEnd
 # Print Decrescent
 menu3:
-#####################
+	la	$a0, array
+	lw	$a1, arraySize
+	sll	$a1, $a1, 2
+	jal	bubbleSortDecrescent
+
+	# Print string
+	la	$a0, menu1S		# Service parameter (address of string)
+	jal	printString
+
+	# print array
+	la	$a0, array
+	lw	$a1, arraySize
+	jal	arrayPrint
+
+	li	$v0, 0			# printMenu return value (0 = keep running)
+	j	menuEnd
 # Sum
 menu4:
 	la	$a0, array
